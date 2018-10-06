@@ -6,7 +6,7 @@
 
 
 (defn generatemssage
-  "this function display message"
+  "view message"
   []
   (page/html5
       [:head

@@ -1,4 +1,4 @@
-(defproject chatter "0.1.0-SNAPSHOT"
+(defproject  chatter "0.1.0-SNAPSHOT"
   :description "Happy: write description"
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
