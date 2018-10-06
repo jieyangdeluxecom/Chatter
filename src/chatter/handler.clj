@@ -3,15 +3,15 @@
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [hiccup.page :as page]
-            [hiccup.form :as form]))
+            [hiccup.form :as form]
+            [ring.middleware.params :refer [wrap-params]]))
 
 
-(def chat-messages [{:name "blue" :message "hello, world"}
-  {:name "red" :message "red is my favorite color"}
-  {:name "green" :message "green makes it go faster"}])
+(def chat-messages (atom ()));this is a variable
 
 
-(defn generatemssage
+
+(defn generateMssage ; this is a methid
   "view message"
   [d]
   (page/html5
@@ -29,9 +29,15 @@
           [:table
           (map (fn [m] [:tr [:td (:name m)] [:td (:message m)]]) d)]]]))
 
+(defn updateMessage
+  "update message"
+  [d name new-message]
+  (swap! d conj {:name name :message new-message}))
+
 (defroutes app-routes
-  (GET "/" [](generatemssage chat-messages))
-  (POST "/" [](generatemssage chat-messages))
+  (GET "/" [](generateMssage @chat-messages))
+  (POST "/" {input :params}(generateMssage (updateMessage chat-messages
+    (get input "name") (get input "msg"))))
   (route/not-found "Not Found"))
 
-(def app app-routes)
+(def app (wrap-params app-routes))  ; the default one works for Get method, but does not work for the POST method for security reason
